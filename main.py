@@ -12,6 +12,13 @@ import tkinter as tk
 from tkinter import *
 #creating window
 window = tk.Tk()
+window.geometry('600x400')
+
+#screen parameters
+my_screen_width = window.winfo_screenwidth
+my_screen_height = window.winfo_screenheight
+
+
 
 
 #mainloop
