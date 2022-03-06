@@ -13,10 +13,19 @@ from tkinter import *
 #creating window
 window = tk.Tk()
 window.geometry('600x400')
+window.title("Main")
+
+#creating Canvas
+
+
+#different functions
 
 #screen parameters
 my_screen_width = window.winfo_screenwidth
 my_screen_height = window.winfo_screenheight
+
+#buttons/labels/entrys
+
 
 
 
