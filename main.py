@@ -9,6 +9,7 @@
 две величины равны с точностью до двух знаков после запятой.
 '''
 #import
+from email import message
 from math import sqrt
 from tkinter import *
 import tkinter.messagebox as mb
@@ -26,7 +27,7 @@ canv = Canvas(window, width=1000, height=1000, bg='black')
 canv.grid(row=0, column=0)
 
 #FUNCS
-#Info about program
+#Info
 def aboutprog():
     mb.showinfo(title='About program', message='Будем называть два многоугольника подобными, если существует взаимно \
 однозначное отображение сторон этих двух фигур такое, что соответствующие \
@@ -36,6 +37,14 @@ def aboutprog():
 Многоугольники задаются на плоскости координатами вершин контуров. Вершины \
 в контуре перечисляются в порядке обхода против часовой стрелки. Считать, что \
 две величины равны с точностью до двух знаков после запятой.')
+
+
+def aboutauthor():
+    mb.showinfo(title='Author', message='Турчанинов Александр ИУ7-34Б')
+
+
+def quitprog():
+    window.quit()
 
 #buttons/labels/entrys
 #Label INITIALIZATION
@@ -52,6 +61,8 @@ mainmenu = Menu(window)
 window.config(menu=mainmenu)
 
 mainmenu.add_command(label='About Program', command=aboutprog)
+mainmenu.add_command(label='Author', command=aboutauthor)
+mainmenu.add_command(label='Quit', command=quitprog)
 
 #mainloop
 window.mainloop()
