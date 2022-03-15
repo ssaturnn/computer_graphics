@@ -13,8 +13,11 @@ from math import sqrt
 from tkinter import *
 import tkinter.messagebox as mb
 
+
 #ARRAYS
 points_list = []
+first_figure = []
+second_figure = []
 last_act = []
 
 #creating window
@@ -40,10 +43,6 @@ def str_to_float(str):
 
 def create_point(x, y, text=0):
     point_id = canv.create_oval(x - 0.1, y - 0.1, x + 0.1, y + 0.1, width=3, outline='black', fill='black', activeoutline='gray34', activefill='gray34')
-    last_act.clear()
-    last_act.append('del')
-    last_act.append('poi')
-    last_act.append(point_id)
     if text == 1:
         x -= canv.coords(zero)[0]
         y -= canv.coords(zero)[1]
@@ -52,7 +51,7 @@ def create_point(x, y, text=0):
 
 def point_coords(event):
     xp = event.x
-    yp = event.y
+    yp = event.y 
     create_point(xp, yp)
 
 
@@ -111,6 +110,9 @@ frmtext = Frame(window)
 point_btn = Button(frmpaint, text='◦', command=start_point_draw)
 point_btn.grid(row=0, column = 1)
 
+confirm_figure = Button(frmpaint, text='Confirm Figure')
+confirm_figure.grid(row=1, column=1)
+
 #undo_btn = Button(frmpaint, text='↺', command=undo_last_act)
 #undo_btn.grid(row=0, column=2)
 
@@ -144,4 +146,3 @@ frmtext.grid(row=0, column=2, sticky=N)
 
 #mainloop
 window.mainloop()
-
