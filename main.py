@@ -30,6 +30,8 @@ class Ncannotbe2orLower(Error):
 #ARRAYS
 polygon1_points = []
 polygon2_points = []
+size_of_sides1 = []
+size_of_sides2 = []
 N = -1
 
 #creating window
@@ -144,8 +146,16 @@ def submit():
         global N
         global count1
         global count2
+        global polygon1_points
+        global polygon2_points
+        global size_of_sides1
+        global size_of_sides2
         count1 = 0
         count2 = 0
+        polygon1_points = []
+        polygon2_points = []
+        size_of_sides1 = []
+        size_of_sides2 = []
         N = int(input_sides_number_entry.get())
         if N <=2:
             raise Ncannotbe2orLower
@@ -156,8 +166,32 @@ def submit():
 
 #Similarness Button
 def check_similarness():
+    global N
+    global polygon1_points
+    global polygon2_points
+    global size_of_sides1
+    global size_of_sides2
+    #drawing
     draw_polygon1()
     draw_polygon2()
+    #finding sides size
+    #1 polygon
+    if polygon1_points != []:
+        for i in range(0, len(polygon1_points)-2, 2):
+            if i != (len(polygon1_points) - 2):
+                size_of_sides1.append(sqrt((polygon1_points[i+2]-polygon1_points[i])**2 + (polygon1_points[i+3]-polygon1_points[i+1])**2))
+            else:
+                size_of_sides1.append(sqrt((polygon1_points[-2]-polygon1_points[0])**2 + (polygon1_points[-1]-polygon1_points[1])**2))
+    #2 polygon
+    if polygon2_points != []:
+        for i in range(0, len(polygon2_points)-2, 2):
+            if i != (len(polygon2_points) - 2):
+                size_of_sides2.append(sqrt((polygon2_points[i+2]-polygon2_points[i])**2 + (polygon2_points[i+3]-polygon2_points[i+1])**2))
+            else:
+                size_of_sides2.append(sqrt((polygon2_points[-2]-polygon2_points[0])**2 + (polygon2_points[-1]-polygon2_points[1])**2))
+        print(size_of_sides1)
+        print(size_of_sides2)
+    
 
 
 #LABELS AND ENTRYS
