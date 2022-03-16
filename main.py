@@ -24,6 +24,9 @@ class NisNotDefined(Error):
     """N is not defined"""
     pass
 
+class Ncannotbe2orLower(Error):
+    pass
+
 #ARRAYS
 polygon1_points = []
 polygon2_points = []
@@ -36,7 +39,7 @@ window.geometry('1200x1200')
 
 
 #creating Canvas
-canv = Canvas(window, width=1200, height=800, bg='black')
+canv = Canvas(window, width=1200, height=800, bg='white')
 canv.grid(row=0, column=0, columnspan=6, sticky="N")
 
 
@@ -85,12 +88,18 @@ def add_point_to_polygon1():
         y = int(input_y1_entry.get())
         polygon1_points.append(x)
         polygon1_points.append(y)
+        clear_all1()
     except NisNotDefined:
         mb.showerror(title="Error", message="You should define the amount of sides first")
     except ValueError:
         mb.showerror(title="Error", message="Too many points")
     except:
         mb.showerror(title="Error", message="Incorrect point coords input for polygon2")
+
+#Draw Polygon 1
+def draw_polygon1():
+    canv.create_polygon(polygon1_points, fill="white", outline="black")
+
 
 #Polygon 2
 def clear_x2():
@@ -117,12 +126,17 @@ def add_point_to_polygon2():
         y = int(input_y2_entry.get())
         polygon2_points.append(x)
         polygon2_points.append(y)
+        clear_all2()
     except NisNotDefined:
         mb.showerror(title="Error", message="You should define the amount of sides first")    
     except ValueError:
         mb.showerror(title="Error", message="Too many points")
     except:
         mb.showerror(title="Error", message="Incorrect point coords input for polygon2")
+
+#Draw Polygon 2
+def draw_polygon2():
+    canv.create_polygon(polygon2_points, fill="red", outline="black")
 
 #sumbit
 def submit():
@@ -133,8 +147,17 @@ def submit():
         count1 = 0
         count2 = 0
         N = int(input_sides_number_entry.get())
+        if N <=2:
+            raise Ncannotbe2orLower
+    except Ncannotbe2orLower:
+        mb.showerror(title="Error", message="Amount of sides cannot be 2 or lower")
     except:
         mb.showerror(title="Error", message="Incorrect sides amount input")
+
+#Similarness Button
+def check_similarness():
+    draw_polygon1()
+    draw_polygon2()
 
 
 #LABELS AND ENTRYS
@@ -206,7 +229,7 @@ clear_entry_x2_and_y_button.grid(column=4, row=5, sticky="E")
 
 
 #Buttons for similarness and sides amount
-check_for_similarness_button = Button(window, text="Check similarness")
+check_for_similarness_button = Button(window, text="Check similarness", command=check_similarness)
 check_for_similarness_button.grid(column=0, row=3, sticky="W")
 
 submit_sides_amount_button = Button(window, text="Submit", command=submit)
