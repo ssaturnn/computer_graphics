@@ -27,6 +27,9 @@ class NisNotDefined(Error):
 class Ncannotbe2orLower(Error):
     pass
 
+class LessPointsThanN(Error):
+    pass
+
 #ARRAYS
 polygon1_points = []
 polygon2_points = []
@@ -100,7 +103,16 @@ def add_point_to_polygon1():
 
 #Draw Polygon 1
 def draw_polygon1():
-    canv.create_polygon(polygon1_points, fill="white", outline="black")
+    global N
+    global polygon1_points
+    try:
+        if len(polygon1_points) < N * 2:
+            raise LessPointsThanN
+        canv.create_polygon(polygon1_points, fill="white", outline="black")
+    except LessPointsThanN:
+        mb.showerror(title="Error", message="Enter more Points")
+    except:
+        mb.showerror(title="Error", message="You should add points at first")
 
 
 #Polygon 2
@@ -138,7 +150,16 @@ def add_point_to_polygon2():
 
 #Draw Polygon 2
 def draw_polygon2():
-    canv.create_polygon(polygon2_points, fill="red", outline="black")
+    global N
+    global polygon2_points
+    try:
+        if len(polygon2_points) < N * 2:
+            raise LessPointsThanN
+        canv.create_polygon(polygon2_points, fill="white", outline="black")
+    except LessPointsThanN:
+        mb.showerror(title="Error", message="Enter more Points")
+    except:
+        mb.showerror(title="Error", message="You should add points at first")
 
 #sumbit
 def submit():
@@ -171,6 +192,7 @@ def check_similarness():
     global polygon2_points
     global size_of_sides1
     global size_of_sides2
+    clear_previous()
     #drawing
     draw_polygon1()
     draw_polygon2()
@@ -191,6 +213,17 @@ def check_similarness():
                 size_of_sides2.append(sqrt((polygon2_points[-2]-polygon2_points[0])**2 + (polygon2_points[-1]-polygon2_points[1])**2))
         print(size_of_sides1)
         print(size_of_sides2)
+
+def clear_previous():
+    global polygon1_points
+    global polygon2_points
+    global size_of_sides1
+    global size_of_sides2
+    polygon1_points = []
+    polygon2_points = []
+    size_of_sides1 = []
+    size_of_sides2 = []
+    
     
 
 
@@ -237,7 +270,7 @@ input_sides_number_entry.grid(column=0, row=2, sticky="W")
 #BUTTONS
 #Buttons for polygon1
 add_to_polygon1_point_button = Button(window, text="Add point to polygon1", command=add_point_to_polygon1)
-add_to_polygon1_point_button.grid(column=1, row=6, sticky="W")
+add_to_polygon1_point_button.grid(column=1, row=7, sticky="W")
 
 clear_entry_x1_button = Button(window, text="clear X1", command=clear_x1)
 clear_entry_x1_button.grid(column=2, row=3, sticky="W")
@@ -248,9 +281,12 @@ clear_entry_y1_button.grid(column=2, row=4, sticky="W")
 clear_entry_x1_and_y_button = Button(window, text="clear all1", command=clear_all1)
 clear_entry_x1_and_y_button.grid(column=2, row=5, sticky="W")
 
+draw_polygon1_button = Button(window, text="Draw Polygon1", command=draw_polygon1)
+draw_polygon1_button.grid(column=1, row=6, sticky="W")
+
 #Buttons for polygon2
 add_to_polygon2_point_button = Button(window, text="Add point to polygon2", command=add_point_to_polygon2)
-add_to_polygon2_point_button.grid(column=3, row=6, sticky="E")
+add_to_polygon2_point_button.grid(column=3, row=7, sticky="E")
 
 clear_entry_x2_button = Button(window, text="clear X2", command=clear_x2)
 clear_entry_x2_button.grid(column=4, row=3, sticky="E")
@@ -260,6 +296,9 @@ clear_entry_y2_button.grid(column=4, row=4, sticky="E")
 
 clear_entry_x2_and_y_button = Button(window, text="clear all2", command=clear_all2)
 clear_entry_x2_and_y_button.grid(column=4, row=5, sticky="E")
+
+draw_polygon2_button = Button(window, text="Draw Polygon2", command=draw_polygon2)
+draw_polygon2_button.grid(column=3, row=6, sticky="E")
 
 
 #Buttons for similarness and sides amount
