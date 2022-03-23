@@ -5,7 +5,7 @@
 '''
 
 from math import pi, sqrt
-from tkinter import Tk, Canvas, Label, Entry, Button, DISABLED, messagebox
+from tkinter import Tk, Canvas, Label, Entry, Button, DISABLED, messagebox, Menu
 
 WINDOW_WIDTH = 1105
 WINDOW_HEIGHT = 630
@@ -213,9 +213,9 @@ def build_triangle():
                         triangle_points[2] = u
 
     if len(res_triangle) != 0:
-        canvas.create_line(res_triangle[0], res_triangle[1], width = 4, fill = "green")
-        canvas.create_line(res_triangle[1], res_triangle[2], width = 4, fill = "green")
-        canvas.create_line(res_triangle[0], res_triangle[2], width = 4, fill = "green")
+        canvas.create_line(res_triangle[0], res_triangle[1], width = 4, fill = "red")
+        canvas.create_line(res_triangle[1], res_triangle[2], width = 4, fill = "red")
+        canvas.create_line(res_triangle[0], res_triangle[2], width = 4, fill = "red")
 
         L1 = line(res_triangle[0], res_triangle[1])
         L2 = line(res_triangle[0], res_triangle[2])
@@ -243,7 +243,7 @@ def build_triangle():
         if R > 4:
             R -= 4
             
-        canvas.create_oval(x - R, y - R, x + R, y + R, width = 4, outline = "yellow")
+        canvas.create_oval(x - R, y - R, x + R, y + R, width = 4, outline = "blue")
     else:
         messagebox.showwarning("Ошибка",
             "Невозможно построить треугольник!")
@@ -257,7 +257,7 @@ def build_triangle():
         y = new_point_coord[i][1]
         r = 3.5
         canvas.create_oval(x - r, y - r, x + r, y + r,
-                           width = 1, outline = "red", fill = "red")
+                           width = 1, outline = "black", fill = "black")
         
         for j in range(len(triangle_points)):
             if i != triangle_points[j] and j == len(triangle_points) - 1:
@@ -481,6 +481,9 @@ def task():
         "Найти такой треугольник с вершинами в этих точках, "
         "у которого разность площадей треугольника и вписанного круга максимальна.")
 
+def aboutauthor():
+    messagebox.showinfo(title='Автор', message='Турчанинов Александр ИУ7-44Б')
+
 if __name__ == "__main__":
     window = Tk()
     window.title("Лабораторная работа №1")
@@ -495,7 +498,7 @@ if __name__ == "__main__":
     triangle_points = [-1, -1, -1]
     numb_points = 0
 
-    Label(window, height = 2, text = "Количество точек:",
+    Label(window, height = 2, text = "Кол-во точек:",
                 font = ("Courier New", 16)).place(x = 10, y = 10)
 
     point_txt = Entry(window, font = ("Courier New", 16))
@@ -544,16 +547,16 @@ if __name__ == "__main__":
     Button(text = "Ввести точки", font = ("Courier New", 15), command = read_numb_points).\
         place(width = 180, height = 40, x = 400, y = 10)
 
-    Button(text = "Очистить все поля", font = ("Courier New", 15), command = clear_canvas).\
+    Button(text = "Очистить всё", font = ("Courier New", 15), command = clear_canvas).\
         place(width = 180, height = 40, x = 400, y = 60)
 
     Button(text = "Построить точки", font = ("Courier New", 15), command = build_points).\
-        place(width = 230, height = 40, x = 595, y = 10)
+        place(width = 250, height = 40, x = 593, y = 10)
 
-    Button(text = "Построить треугольник", font = ("Courier New", 15), command = build_triangle).\
-        place(width = 230, height = 40, x = 595, y = 60)
+    Button(text = "Построить Треугольник", font = ("Courier New", 15), command = build_triangle).\
+        place(width = 250, height = 40, x = 593, y = 60)
 
-    Button(text = "Вывести результаты", font = ("Courier New", 15), command = display_results).\
+    Button(text = "Результат", font = ("Courier New", 15), command = display_results).\
         place(width = 180, height = 40, x = 205, y = 60)
 
     Button(text = "Условие задачи", font = ("Courier New", 15), command = task).\
@@ -564,5 +567,10 @@ if __name__ == "__main__":
 
     Button(text = "Удалить\nточку", font = ("Courier New", 15), command = del_point).\
         place(width = 120, height = 50,  x = CANVAS_WIDTH + 150, y = 490)
+    
+    mainmenu = Menu(window)
+    window.config(menu=mainmenu)
+
+    mainmenu.add_command(label='Author', command=aboutauthor)
 
     window.mainloop()
