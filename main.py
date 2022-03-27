@@ -40,12 +40,21 @@ N = -1
 #creating window
 window = Tk()
 window.title("Lab 01")
-window.geometry('1200x1200')
+window.geometry('1221x620')
 
+#Creating Frames
+Frame_for_polygon1 =Frame(window)
+Frame_for_polygon2 =Frame(window)
+Frame_for_canvas = Frame(window)
+Frame_for_actions =Frame(window)
+Frame_for_polygon1.pack(side=LEFT)
+Frame_for_canvas.pack(side=LEFT)
+Frame_for_polygon2(side=LEFT)
+Frame_for_actions.pack(side=BOTTOM)
 
 #creating Canvas
-canv = Canvas(window, width=1200, height=800, bg='white')
-canv.grid(row=0, column=0, columnspan=6, sticky="N")
+canv = Canvas(Frame_for_canvas, width=690, height=620, bg='white')
+canv.grid(row=0, column=0)
 
 
 #Info
@@ -229,35 +238,35 @@ def clear_previous():
 
 #LABELS AND ENTRYS
 #Polygon1
-for_polygon_1_label = Label(window, text="Polygon 1")
+for_polygon_1_label = Label(Frame_for_polygon1, text="Polygon 1")
 for_polygon_1_label.grid(column=1, row=1, sticky="W")
 
-input_x1_label = Label(window, text='Input X1:')
+input_x1_label = Label(Frame_for_polygon1, text='Input X1:')
 input_x1_label.grid(column=1, row=2, sticky="W")
 
-input_y1_label = Label(window, text='Input Y1:')
+input_y1_label = Label(Frame_for_polygon1, text='Input Y1:')
 input_y1_label.grid(column=1, row=4, sticky="W")
 
-input_x1_entry = Entry(window, width=20)
+input_x1_entry = Entry(Frame_for_polygon1, width=20)
 input_x1_entry.grid(column=1, row=3, sticky="W")
 
-input_y1_entry = Entry(window, width=20)
+input_y1_entry = Entry(Frame_for_polygon1, width=20)
 input_y1_entry.grid(column=1, row=5, sticky="W")
 
 #Polygon2
-for_polygon_2_label = Label(window, text="Polygon 2")
+for_polygon_2_label = Label(Frame_for_polygon2, text="Polygon 2")
 for_polygon_2_label.grid(column=3, row=1, sticky="E")
 
-input_x2_label = Label(window, text='Input X2:')
+input_x2_label = Label(Frame_for_polygon2, text='Input X2:')
 input_x2_label.grid(column=3, row=2, sticky="E")
 
-input_y2_label = Label(window, text='Input Y2:')
+input_y2_label = Label(Frame_for_polygon2, text='Input Y2:')
 input_y2_label.grid(column=3, row=4, sticky="E")
 
-input_x2_entry = Entry(window, width=20)
+input_x2_entry = Entry(Frame_for_polygon2, width=20)
 input_x2_entry.grid(column=3, row=3, sticky="E")
 
-input_y2_entry = Entry(window, width=20)
+input_y2_entry = Entry(Frame_for_polygon2, width=20)
 input_y2_entry.grid(column=3, row=5, sticky="E")
 
 #Sides amount
