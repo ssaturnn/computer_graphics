@@ -43,17 +43,17 @@ window.title("Lab 01")
 window.geometry('1221x620')
 
 #Creating Frames
-Frame_for_polygon1 =Frame(window)
-Frame_for_polygon2 =Frame(window)
+Frame_for_polygon1 = Frame(window)
+Frame_for_polygon2 = Frame(window)
 Frame_for_canvas = Frame(window)
-Frame_for_actions =Frame(window)
-Frame_for_polygon1.pack(side=LEFT)
-Frame_for_canvas.pack(side=LEFT)
-Frame_for_polygon2(side=LEFT)
-Frame_for_actions.pack(side=BOTTOM)
+Frame_for_actions = Frame(window)
+Frame_for_polygon1.grid(row=0, column=0)
+Frame_for_canvas.grid(row=0, column=1)
+Frame_for_polygon2.grid(row=0, column=2)
+Frame_for_actions.grid(row=0, column=0)
 
 #creating Canvas
-canv = Canvas(Frame_for_canvas, width=690, height=620, bg='white')
+canv = Canvas(Frame_for_canvas, width=690, height=520, bg='white')
 canv.grid(row=0, column=0)
 
 
