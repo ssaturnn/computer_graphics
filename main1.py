@@ -7,9 +7,10 @@
 from math import pi, sqrt
 from tkinter import Tk, Canvas, Label, Entry, Button, DISABLED, messagebox, Menu
 
-WINDOW_WIDTH = 1105
-WINDOW_HEIGHT = 630
+WINDOW_WIDTH40WINDOW_HEIGHT = 630
 
+WINDOW_WIDTH = 1500
+WINDOW_HEIGHT = 1000
 CANVAS_WIDTH = WINDOW_WIDTH - 280
 CANVAS_HEIGHT = WINDOW_HEIGHT - 120
 

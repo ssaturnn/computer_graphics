@@ -11,9 +11,9 @@
 #import
 from glob import glob
 from math import sqrt
-from msilib.schema import Error
 from tkinter import *
 import tkinter.messagebox as mb
+from tkinter import ttk
 
 from matplotlib.pyplot import title
 
@@ -33,8 +33,8 @@ class LessPointsThanN(Error):
 #ARRAYS
 polygon1_points = []
 polygon2_points = []
-size_of_sides1 = []
-size_of_sides2 = []
+point1_number = []
+point2_number = []
 N = -1
 
 #creating window
@@ -50,7 +50,7 @@ Frame_for_actions = Frame(window)
 Frame_for_polygon1.grid(row=0, column=0)
 Frame_for_canvas.grid(row=0, column=1)
 Frame_for_polygon2.grid(row=0, column=2)
-Frame_for_actions.grid(row=0, column=0)
+Frame_for_actions.grid(row=1, column=1)
 
 #creating Canvas
 canv = Canvas(Frame_for_canvas, width=690, height=520, bg='white')
@@ -98,10 +98,12 @@ def add_point_to_polygon1():
         count1+=1
         if count1 > N:
             raise ValueError
+        point1_number.append(count1)
+        points1_combobox.configure(values=point1_number)
         x = int(input_x1_entry.get())
         y = int(input_y1_entry.get())
-        polygon1_points.append(x)
-        polygon1_points.append(y)
+        polygon1_points[count1-1].append(x)
+        polygon1_points[count1-1].append(y)
         clear_all1()
     except NisNotDefined:
         mb.showerror(title="Error", message="You should define the amount of sides first")
@@ -147,8 +149,10 @@ def add_point_to_polygon2():
             raise ValueError
         x = int(input_x2_entry.get())
         y = int(input_y2_entry.get())
-        polygon2_points.append(x)
-        polygon2_points.append(y)
+        #Ишак, не забудь тут комбобокс добавить
+        polygon2_points[count2-1].append(x)
+        polygon2_points[count2-1].append(y)
+        print(polygon2_points)
         clear_all2()
     except NisNotDefined:
         mb.showerror(title="Error", message="You should define the amount of sides first")    
@@ -178,15 +182,15 @@ def submit():
         global count2
         global polygon1_points
         global polygon2_points
-        global size_of_sides1
-        global size_of_sides2
         count1 = 0
         count2 = 0
         polygon1_points = []
         polygon2_points = []
-        size_of_sides1 = []
-        size_of_sides2 = []
         N = int(input_sides_number_entry.get())
+        for i in range(0, N):
+            polygon1_points.append([i+1])
+        for i in range(0, N):
+            polygon2_points.append([i+1])
         if N <=2:
             raise Ncannotbe2orLower
     except Ncannotbe2orLower:
@@ -199,39 +203,40 @@ def check_similarness():
     global N
     global polygon1_points
     global polygon2_points
-    global size_of_sides1
-    global size_of_sides2
-    clear_previous()
     #drawing
-    draw_polygon1()
-    draw_polygon2()
+    #draw_polygon1()
+    #draw_polygon2()
     #finding sides size
     #1 polygon
     if polygon1_points != []:
-        for i in range(0, len(polygon1_points)-2, 2):
-            if i != (len(polygon1_points) - 2):
-                size_of_sides1.append(sqrt((polygon1_points[i+2]-polygon1_points[i])**2 + (polygon1_points[i+3]-polygon1_points[i+1])**2))
-            else:
-                size_of_sides1.append(sqrt((polygon1_points[-2]-polygon1_points[0])**2 + (polygon1_points[-1]-polygon1_points[1])**2))
+        try:
+            for i in range(0, N):
+                a = sqrt((polygon1_points[i+1][1]-polygon1_points[i][1])**2 + (polygon1_points[i+1][2]-polygon1_points[i][2])**2)
+                a = float("%.2f" % a)
+                polygon1_points[i].append(a)
+        except:
+            a = sqrt((polygon1_points[-1][1]-polygon1_points[0][1])**2 + (polygon1_points[-1][2]-polygon1_points[0][2])**2)
+            a = float("%.2f" % a)
+            polygon1_points[i].append(a)
     #2 polygon
     if polygon2_points != []:
-        for i in range(0, len(polygon2_points)-2, 2):
-            if i != (len(polygon2_points) - 2):
-                size_of_sides2.append(sqrt((polygon2_points[i+2]-polygon2_points[i])**2 + (polygon2_points[i+3]-polygon2_points[i+1])**2))
-            else:
-                size_of_sides2.append(sqrt((polygon2_points[-2]-polygon2_points[0])**2 + (polygon2_points[-1]-polygon2_points[1])**2))
-        print(size_of_sides1)
-        print(size_of_sides2)
+        try:
+            for i in range(0, N):
+                a = sqrt((polygon2_points[i+1][1]-polygon2_points[i][1])**2 + (polygon2_points[i+1][2]-polygon2_points[i][2])**2)
+                a = float("%.2f" % a)
+                polygon2_points[i].append(a)
+        except:
+            a = sqrt((polygon2_points[-1][1]-polygon2_points[0][1])**2 + (polygon2_points[-1][2]-polygon2_points[0][2])**2)
+            a = float("%.2f" % a)
+            polygon2_points[i].append(a)
+    print(polygon2_points)
 
 def clear_previous():
     global polygon1_points
     global polygon2_points
-    global size_of_sides1
-    global size_of_sides2
     polygon1_points = []
     polygon2_points = []
-    size_of_sides1 = []
-    size_of_sides2 = []
+
     
     
 
@@ -239,83 +244,96 @@ def clear_previous():
 #LABELS AND ENTRYS
 #Polygon1
 for_polygon_1_label = Label(Frame_for_polygon1, text="Polygon 1")
-for_polygon_1_label.grid(column=1, row=1, sticky="W")
+for_polygon_1_label.grid(column=1, row=1, sticky="N")
 
 input_x1_label = Label(Frame_for_polygon1, text='Input X1:')
-input_x1_label.grid(column=1, row=2, sticky="W")
+input_x1_label.grid(column=1, row=2, sticky="N")
 
 input_y1_label = Label(Frame_for_polygon1, text='Input Y1:')
-input_y1_label.grid(column=1, row=4, sticky="W")
+input_y1_label.grid(column=1, row=4, sticky="N")
 
 input_x1_entry = Entry(Frame_for_polygon1, width=20)
-input_x1_entry.grid(column=1, row=3, sticky="W")
+input_x1_entry.grid(column=1, row=3, sticky="N")
 
 input_y1_entry = Entry(Frame_for_polygon1, width=20)
-input_y1_entry.grid(column=1, row=5, sticky="W")
+input_y1_entry.grid(column=1, row=5, sticky="N")
 
 #Polygon2
 for_polygon_2_label = Label(Frame_for_polygon2, text="Polygon 2")
-for_polygon_2_label.grid(column=3, row=1, sticky="E")
+for_polygon_2_label.grid(column=3, row=1, sticky="N")
 
 input_x2_label = Label(Frame_for_polygon2, text='Input X2:')
-input_x2_label.grid(column=3, row=2, sticky="E")
+input_x2_label.grid(column=3, row=2, sticky="N")
 
 input_y2_label = Label(Frame_for_polygon2, text='Input Y2:')
-input_y2_label.grid(column=3, row=4, sticky="E")
+input_y2_label.grid(column=3, row=4, sticky="N")
 
 input_x2_entry = Entry(Frame_for_polygon2, width=20)
-input_x2_entry.grid(column=3, row=3, sticky="E")
+input_x2_entry.grid(column=3, row=3, sticky="N")
 
 input_y2_entry = Entry(Frame_for_polygon2, width=20)
-input_y2_entry.grid(column=3, row=5, sticky="E")
+input_y2_entry.grid(column=3, row=5, sticky="N")
+
+
+
 
 #Sides amount
-input_sides_number_label = Label(window, text="Enter the amount of sides:")
-input_sides_number_label.grid(column=0, row=1, sticky="W")
+input_sides_number_label = Label(Frame_for_actions, text="Enter the amount of sides:")
+input_sides_number_label.grid(column=0, row=1, sticky="NESW")
 
-input_sides_number_entry = Entry(window, width=15)
-input_sides_number_entry.grid(column=0, row=2, sticky="W")
+input_sides_number_entry = Entry(Frame_for_actions, width=15)
+input_sides_number_entry.grid(column=0, row=2, sticky="NSEW")
+
 
 #BUTTONS
 #Buttons for polygon1
-add_to_polygon1_point_button = Button(window, text="Add point to polygon1", command=add_point_to_polygon1)
-add_to_polygon1_point_button.grid(column=1, row=7, sticky="W")
+add_to_polygon1_point_button = Button(Frame_for_polygon1, text="Add point to polygon1", command=add_point_to_polygon1)
+add_to_polygon1_point_button.grid(column=1, row=6, sticky="W")
 
-clear_entry_x1_button = Button(window, text="clear X1", command=clear_x1)
+clear_entry_x1_button = Button(Frame_for_polygon1, text="clear X1", command=clear_x1)
 clear_entry_x1_button.grid(column=2, row=3, sticky="W")
 
-clear_entry_y1_button = Button(window, text="clear Y1", command=clear_y1)
-clear_entry_y1_button.grid(column=2, row=4, sticky="W")
+clear_entry_y1_button = Button(Frame_for_polygon1, text="clear Y1", command=clear_y1)
+clear_entry_y1_button.grid(column=2, row=5, sticky="W")
 
-clear_entry_x1_and_y_button = Button(window, text="clear all1", command=clear_all1)
-clear_entry_x1_and_y_button.grid(column=2, row=5, sticky="W")
+clear_entry_x1_and_y_button = Button(Frame_for_polygon1, text="clear ALL1", command=clear_all1)
+clear_entry_x1_and_y_button.grid(column=2, row=4, sticky="W")
 
-draw_polygon1_button = Button(window, text="Draw Polygon1", command=draw_polygon1)
-draw_polygon1_button.grid(column=1, row=6, sticky="W")
+draw_polygon1_button = Button(Frame_for_polygon1, text="Draw Polygon1", command=draw_polygon1)
+draw_polygon1_button.grid(column=1, row=7, sticky="W")
 
 #Buttons for polygon2
-add_to_polygon2_point_button = Button(window, text="Add point to polygon2", command=add_point_to_polygon2)
-add_to_polygon2_point_button.grid(column=3, row=7, sticky="E")
+add_to_polygon2_point_button = Button(Frame_for_polygon2, text="Add point to polygon2", command=add_point_to_polygon2)
+add_to_polygon2_point_button.grid(column=3, row=6, sticky="W")
 
-clear_entry_x2_button = Button(window, text="clear X2", command=clear_x2)
-clear_entry_x2_button.grid(column=4, row=3, sticky="E")
+clear_entry_x2_button = Button(Frame_for_polygon2, text="clear X2", command=clear_x2)
+clear_entry_x2_button.grid(column=4, row=3, sticky="W")
 
-clear_entry_y2_button = Button(window, text="clear Y2", command=clear_y2)
-clear_entry_y2_button.grid(column=4, row=4, sticky="E")
+clear_entry_y2_button = Button(Frame_for_polygon2, text="clear Y2", command=clear_y2)
+clear_entry_y2_button.grid(column=4, row=5, sticky="W")
 
-clear_entry_x2_and_y_button = Button(window, text="clear all2", command=clear_all2)
-clear_entry_x2_and_y_button.grid(column=4, row=5, sticky="E")
+clear_entry_x2_and_y_button = Button(Frame_for_polygon2, text="clear ALL2", command=clear_all2)
+clear_entry_x2_and_y_button.grid(column=4, row=4, sticky="W")
 
-draw_polygon2_button = Button(window, text="Draw Polygon2", command=draw_polygon2)
-draw_polygon2_button.grid(column=3, row=6, sticky="E")
+draw_polygon2_button = Button(Frame_for_polygon2, text="Draw Polygon2", command=draw_polygon2)
+draw_polygon2_button.grid(column=3, row=7, sticky="W")
+
+#COMBOBOBXES
+#Polygon 1
+choose_point_from_polygon1 = Label(Frame_for_polygon1, text="Points List:")
+choose_point_from_polygon1.grid(column=1, row=8, sticky="W")
+
+points1_combobox = ttk.Combobox(Frame_for_polygon1, values=point1_number)
+points1_combobox.grid(column=1, row=9)
+
 
 
 #Buttons for similarness and sides amount
-check_for_similarness_button = Button(window, text="Check similarness", command=check_similarness)
+check_for_similarness_button = Button(Frame_for_actions, text="Check Similarness", command=check_similarness)
 check_for_similarness_button.grid(column=0, row=3, sticky="W")
 
-submit_sides_amount_button = Button(window, text="Submit", command=submit)
-submit_sides_amount_button.grid(column=0, row=2)
+submit_sides_amount_button = Button(Frame_for_actions, text="Submit", command=submit)
+submit_sides_amount_button.grid(column=1, row=2)
 
 
 
