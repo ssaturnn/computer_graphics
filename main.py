@@ -9,8 +9,10 @@
 две величины равны с точностью до двух знаков после запятой.
 '''
 #import
+from cmath import acos
 from glob import glob
 from math import sqrt
+from math import acos
 from tkinter import *
 import tkinter.messagebox as mb
 from tkinter import ttk
@@ -198,6 +200,36 @@ def submit():
     except:
         mb.showerror(title="Error", message="Incorrect sides amount input")
 
+
+#Finding all angles
+def find_angles_of_polygon1():
+    global N
+    global polygon1_points
+    global polygon2_points
+    #polygon 1
+    try:
+        for i in range(0, N):
+            x_vector_a = polygon1_points[i][1] - polygon1_points[i+1][1]
+            y_vector_a = polygon1_points[i][2] - polygon1_points[i+1][2]
+            x_vector_b = polygon1_points[i+1][1] - polygon1_points[i+1][1]
+            y_vector_b = polygon1_points[i+1][2] - polygon1_points[i+1][2]
+            scalar_multiplication = (x_vector_a * x_vector_b) + (y_vector_a * y_vector_b)
+            a_module = sqrt(x_vector_a**2 + y_vector_a**2)
+            b_module = sqrt(x_vector_b**2 + y_vector_b**2)
+            angle = acos(scalar_multiplication/(a_module * b_module))
+            polygon1_points[i].append(angle)
+    except:
+        x_vector_a = polygon1_points[i][1] - polygon1_points[i+1][1]
+        y_vector_a = polygon1_points[i][2] - polygon1_points[i+1][2]
+        x_vector_b = polygon1_points[i+1][1] - polygon1_points[i+1][1]
+        y_vector_b = polygon1_points[i+1][2] - polygon1_points[i+1][2]
+        scalar_multiplication = (x_vector_a * x_vector_b) + (y_vector_a * y_vector_b)
+        a_module = sqrt(x_vector_a**2 + y_vector_a**2)
+        b_module = sqrt(x_vector_b**2 + y_vector_b**2)
+        angle = acos(scalar_multiplication/(a_module * b_module))
+        polygon1_points[i].append(angle)
+
+
 #Similarness Button
 def check_similarness():
     global N
@@ -215,11 +247,14 @@ def check_similarness():
                 a = float("%.2f" % a)
                 polygon1_points[i].append(a)
         except:
+            print(i)
             a = sqrt((polygon1_points[-1][1]-polygon1_points[0][1])**2 + (polygon1_points[-1][2]-polygon1_points[0][2])**2)
             a = float("%.2f" % a)
             polygon1_points[i].append(a)
+        find_angles_of_polygon1()
+        print(polygon1_points)
     #2 polygon
-    if polygon2_points != []:
+    '''if polygon2_points != []:
         try:
             for i in range(0, N):
                 a = sqrt((polygon2_points[i+1][1]-polygon2_points[i][1])**2 + (polygon2_points[i+1][2]-polygon2_points[i][2])**2)
@@ -228,8 +263,8 @@ def check_similarness():
         except:
             a = sqrt((polygon2_points[-1][1]-polygon2_points[0][1])**2 + (polygon2_points[-1][2]-polygon2_points[0][2])**2)
             a = float("%.2f" % a)
-            polygon2_points[i].append(a)
-    print(polygon2_points)
+            polygon2_points[i].append(a)'''
+
 
 def clear_previous():
     global polygon1_points
