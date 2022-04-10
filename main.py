@@ -106,6 +106,13 @@ def add_point_to_polygon1():
         y = int(input_y1_entry.get())
         polygon1_points[count1-1].append(x)
         polygon1_points[count1-1].append(y)
+        if count1 != 1:
+            polygon1_points[count1-2].append(x)
+            polygon1_points[count1-2].append(y)
+        if count1 == N:
+            polygon1_points[count1-1].append(polygon1_points[0][1])
+            polygon1_points[count1-1].append(polygon1_points[0][2])
+        print(polygon1_points)
         clear_all1()
     except NisNotDefined:
         mb.showerror(title="Error", message="You should define the amount of sides first")
@@ -149,15 +156,22 @@ def add_point_to_polygon2():
         count2+=1
         if count2 > N:
             raise ValueError
+        point2_number.append(count2)
+        points2_combobox.configure(values=point2_number)
         x = int(input_x2_entry.get())
         y = int(input_y2_entry.get())
-        #Ишак, не забудь тут комбобокс добавить
         polygon2_points[count2-1].append(x)
         polygon2_points[count2-1].append(y)
+        if count2 != 1:
+            polygon2_points[count2-2].append(x)
+            polygon2_points[count2-2].append(y)
+        if count2 == N:
+            polygon2_points[count2-1].append(polygon2_points[0][1])
+            polygon2_points[count2-1].append(polygon2_points[0][2])
         print(polygon2_points)
         clear_all2()
     except NisNotDefined:
-        mb.showerror(title="Error", message="You should define the amount of sides first")    
+        mb.showerror(title="Error", message="You should define the amount of sides first")
     except ValueError:
         mb.showerror(title="Error", message="Too many points")
     except:
@@ -360,6 +374,14 @@ choose_point_from_polygon1.grid(column=1, row=8, sticky="W")
 
 points1_combobox = ttk.Combobox(Frame_for_polygon1, values=point1_number)
 points1_combobox.grid(column=1, row=9)
+
+#Polygon2
+choose_point_from_polygon2 = Label(Frame_for_polygon2, text="Points List:")
+choose_point_from_polygon2.grid(column=3, row=8, sticky="W")
+
+points2_combobox = ttk.Combobox(Frame_for_polygon2, values=point2_number)
+points2_combobox.grid(column=3, row=9)
+
 
 
 
