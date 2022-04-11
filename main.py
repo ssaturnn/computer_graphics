@@ -13,6 +13,7 @@ from cmath import acos
 from glob import glob
 from math import sqrt
 from math import acos
+from math import degrees
 from tkinter import *
 import tkinter.messagebox as mb
 from tkinter import ttk
@@ -221,27 +222,55 @@ def find_angles_of_polygon1():
     global polygon1_points
     global polygon2_points
     #polygon 1
-    try:
-        for i in range(0, N):
-            x_vector_a = polygon1_points[i][1] - polygon1_points[i+1][1]
-            y_vector_a = polygon1_points[i][2] - polygon1_points[i+1][2]
-            x_vector_b = polygon1_points[i+1][1] - polygon1_points[i+1][1]
-            y_vector_b = polygon1_points[i+1][2] - polygon1_points[i+1][2]
-            scalar_multiplication = (x_vector_a * x_vector_b) + (y_vector_a * y_vector_b)
-            a_module = sqrt(x_vector_a**2 + y_vector_a**2)
-            b_module = sqrt(x_vector_b**2 + y_vector_b**2)
-            angle = acos(scalar_multiplication/(a_module * b_module))
-            polygon1_points[i].append(angle)
-    except:
-        x_vector_a = polygon1_points[i][1] - polygon1_points[i+1][1]
-        y_vector_a = polygon1_points[i][2] - polygon1_points[i+1][2]
-        x_vector_b = polygon1_points[i+1][1] - polygon1_points[i+1][1]
-        y_vector_b = polygon1_points[i+1][2] - polygon1_points[i+1][2]
-        scalar_multiplication = (x_vector_a * x_vector_b) + (y_vector_a * y_vector_b)
-        a_module = sqrt(x_vector_a**2 + y_vector_a**2)
-        b_module = sqrt(x_vector_b**2 + y_vector_b**2)
-        angle = acos(scalar_multiplication/(a_module * b_module))
-        polygon1_points[i].append(angle)
+    print(polygon1_points)
+    for i in range(1, N):
+        #Left angle count
+        if i != N-1:
+            xvector = polygon1_points[i][3] - polygon1_points[i][1]
+            yvector = polygon1_points[i][4] - polygon1_points[i][2]
+            yvector_next = polygon1_points[i+1][4] - polygon1_points[i+1][2]
+            xvector_next = polygon1_points[i+1][3] - polygon1_points[i+1][1]
+            xvector_prev = (polygon1_points[i-1][3] - polygon1_points[i-1][1]) * -1
+            yvector_prev = (polygon1_points[i-1][4] - polygon1_points[i-1][2]) * -1
+            revx = (polygon1_points[i][3] - polygon1_points[i][1]) * -1
+            revy = (polygon1_points[i][4] - polygon1_points[i][2]) * -1
+            #Left angle
+            scalar_left = xvector*xvector_prev + yvector*yvector_prev
+            multiply_left = sqrt(xvector**2 + yvector**2) * sqrt(xvector_prev**2 + yvector_prev**2)
+            angle_left = degrees(acos(scalar_left/multiply_left))
+            #Right angle
+            scalar_right = revx*xvector_next + revy*yvector_next
+            multiply_right = sqrt(revx**2 + revy**2) * sqrt(xvector_next**2 + yvector_next**2)
+            angle_right = degrees(acos(scalar_right/multiply_right))
+            #Appending
+            polygon1_points[i].append(angle_left)
+            polygon1_points[i].append(angle_right)
+        else:
+            #Left angle
+            angle_left = polygon1_points[-2][7]
+            #Right angle
+            xvector_next = polygon1_points[0][3] - polygon1_points[0][1]
+            yvector_next = polygon1_points[0][4] - polygon1_points[0][2]
+            revx = -1 * (polygon1_points[-1][3] - polygon1_points[-1][1])
+            revy = -1 * (polygon1_points[-1][4] - polygon1_points[-1][2])
+            scalar_right = revx*xvector_next + revy*yvector_next
+            multiply_right = sqrt(revx**2 + revy**2) * sqrt(xvector_next**2 + yvector_next**2)
+            angle_right = degrees(acos(scalar_right/multiply_right))
+            #Appending
+            polygon1_points[-1].append(angle_left)
+            polygon1_points[-1].append(angle_right)
+        #Appending to 1 position
+        print("**********")
+        print(polygon1_points)
+        print("************")
+    polygon1_points[0].append(polygon1_points[-1][7])
+    polygon1_points[0].append(polygon1_points[1][6])
+    print(polygon1_points)
+            
+
+
+        
+    
 
 
 #Similarness Button
