@@ -115,7 +115,6 @@ def add_point_to_polygon1():
         if count1 == N:
             polygon1_points[count1-1].append(polygon1_points[0][1])
             polygon1_points[count1-1].append(polygon1_points[0][2])
-        print(polygon1_points)
         clear_all1()
     except NisNotDefined:
         mb.showerror(title="Error", message="You should define the amount of sides first")
@@ -171,7 +170,6 @@ def add_point_to_polygon2():
         if count2 == N:
             polygon2_points[count2-1].append(polygon2_points[0][1])
             polygon2_points[count2-1].append(polygon2_points[0][2])
-        print(polygon2_points)
         clear_all2()
     except NisNotDefined:
         mb.showerror(title="Error", message="You should define the amount of sides first")
@@ -223,7 +221,6 @@ def find_angles_of_polygon1():
     global N
     global polygon1_points
     #polygon 1
-    print(polygon1_points)
     for i in range(1, N):
         #Left angle count
         if i != N-1:
@@ -261,18 +258,13 @@ def find_angles_of_polygon1():
             polygon1_points[-1].append(angle_left)
             polygon1_points[-1].append(angle_right)
         #Appending to 1 position
-        print("**********")
-        print(polygon1_points)
-        print("************")
     polygon1_points[0].append(polygon1_points[-1][7])
     polygon1_points[0].append(polygon1_points[1][6])
-    print(polygon1_points)
             
 def find_angles_for_polygon2():
     global N
     global polygon2_points
     #polygon 1
-    print(polygon2_points)
     for i in range(1, N):
         #Left angle count
         if i != N-1:
@@ -310,12 +302,8 @@ def find_angles_for_polygon2():
             polygon2_points[-1].append(angle_left)
             polygon2_points[-1].append(angle_right)
         #Appending to 1 position
-        print("**********")
-        print(polygon2_points)
-        print("************")
     polygon2_points[0].append(polygon2_points[-1][7])
     polygon2_points[0].append(polygon2_points[1][6])
-    print(polygon2_points)
 
 
 #Checking for simillar polygons
@@ -335,10 +323,10 @@ def similarness():
         similar1[i].append(polygon1_points[i][6])
         similar1[i].append(polygon1_points[i][7])
         #Polygon2
-        similar2[i].append(polygon1_points[i][0])
-        similar2[i].append(polygon1_points[i][5])
-        similar2[i].append(polygon1_points[i][6])
-        similar2[i].append(polygon1_points[i][7])
+        similar2[i].append(polygon2_points[i][0])
+        similar2[i].append(polygon2_points[i][5])
+        similar2[i].append(polygon2_points[i][6])
+        similar2[i].append(polygon2_points[i][7])
     same_angle = -1
     remember_side_number = -1
     koef = 0
@@ -347,17 +335,26 @@ def similarness():
         for j in range(N):
             if similar1[i][2] == similar2[j][2] and similar1[i][3] == similar2[j][3]:
                 koef = similar1[i][1]/similar2[j][1]
+                print("Koef = ", koef)
                 break
         break
+    print("Similar1=", similar1)
+    print("Similar2=", similar2)
     for i in range(N):
         if flag == False:
+            print("Flag=", flag)
             break
         for j in range(N):
+            print("Я в цикле")
             if similar1[i][2] == similar2[j][2] and similar1[i][3] == similar2[j][3]:
+                print("Зашел в первое условие")
                 if koef != similar1[i][1]/similar2[j][1]:
+                    print("Зашел во второе условие и поменял флаг")
                     flag = False
     if flag == True:
         mb.showinfo(title="Great!",message="The Polygons are simillar!" )
+    else:
+        mb.showinfo(title="Wrong!", message="Polygons are NOT simillar")
         
     
 
@@ -383,15 +380,13 @@ def check_similarness():
                 a = float("%.2f" % a)
                 polygon1_points[i].append(a)
         except:
-            print(i)
             a = sqrt((polygon1_points[-1][1]-polygon1_points[0][1])**2 + (polygon1_points[-1][2]-polygon1_points[0][2])**2)
             a = float("%.2f" % a)
             polygon1_points[i].append(a)
         find_angles_of_polygon1()
-        print(polygon1_points)
     #2 polygon
     if polygon2_points != []:
-        try:
+        try: 
             for i in range(0, N):
                 a = sqrt((polygon2_points[i+1][1]-polygon2_points[i][1])**2 + (polygon2_points[i+1][2]-polygon2_points[i][2])**2)
                 a = float("%.2f" % a)
@@ -403,7 +398,7 @@ def check_similarness():
         find_angles_for_polygon2()
     similarness()
 
-
+  
 def clear_previous():
     global polygon1_points
     global polygon2_points
