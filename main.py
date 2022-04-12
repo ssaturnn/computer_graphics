@@ -38,6 +38,8 @@ polygon1_points = []
 polygon2_points = []
 point1_number = []
 point2_number = []
+similar1 = []
+similar2 = []
 N = -1
 
 #creating window
@@ -220,7 +222,6 @@ def submit():
 def find_angles_of_polygon1():
     global N
     global polygon1_points
-    global polygon2_points
     #polygon 1
     print(polygon1_points)
     for i in range(1, N):
@@ -267,9 +268,101 @@ def find_angles_of_polygon1():
     polygon1_points[0].append(polygon1_points[1][6])
     print(polygon1_points)
             
+def find_angles_for_polygon2():
+    global N
+    global polygon2_points
+    #polygon 1
+    print(polygon2_points)
+    for i in range(1, N):
+        #Left angle count
+        if i != N-1:
+            xvector = polygon2_points[i][3] - polygon2_points[i][1]
+            yvector = polygon2_points[i][4] - polygon2_points[i][2]
+            yvector_next = polygon2_points[i+1][4] - polygon2_points[i+1][2]
+            xvector_next = polygon2_points[i+1][3] - polygon2_points[i+1][1]
+            xvector_prev = (polygon2_points[i-1][3] - polygon2_points[i-1][1]) * -1
+            yvector_prev = (polygon2_points[i-1][4] - polygon2_points[i-1][2]) * -1
+            revx = (polygon2_points[i][3] - polygon2_points[i][1]) * -1
+            revy = (polygon2_points[i][4] - polygon2_points[i][2]) * -1
+            #Left angle
+            scalar_left = xvector*xvector_prev + yvector*yvector_prev
+            multiply_left = sqrt(xvector**2 + yvector**2) * sqrt(xvector_prev**2 + yvector_prev**2)
+            angle_left = degrees(acos(scalar_left/multiply_left))
+            #Right angle
+            scalar_right = revx*xvector_next + revy*yvector_next
+            multiply_right = sqrt(revx**2 + revy**2) * sqrt(xvector_next**2 + yvector_next**2)
+            angle_right = degrees(acos(scalar_right/multiply_right))
+            #Appending
+            polygon2_points[i].append(angle_left)
+            polygon2_points[i].append(angle_right)
+        else:
+            #Left angle
+            angle_left = polygon2_points[-2][7]
+            #Right angle
+            xvector_next = polygon2_points[0][3] - polygon2_points[0][1]
+            yvector_next = polygon2_points[0][4] - polygon2_points[0][2]
+            revx = -1 * (polygon2_points[-1][3] - polygon2_points[-1][1])
+            revy = -1 * (polygon2_points[-1][4] - polygon2_points[-1][2])
+            scalar_right = revx*xvector_next + revy*yvector_next
+            multiply_right = sqrt(revx**2 + revy**2) * sqrt(xvector_next**2 + yvector_next**2)
+            angle_right = degrees(acos(scalar_right/multiply_right))
+            #Appending
+            polygon2_points[-1].append(angle_left)
+            polygon2_points[-1].append(angle_right)
+        #Appending to 1 position
+        print("**********")
+        print(polygon2_points)
+        print("************")
+    polygon2_points[0].append(polygon2_points[-1][7])
+    polygon2_points[0].append(polygon2_points[1][6])
+    print(polygon2_points)
 
 
+#Checking for simillar polygons
+def similarness():
+    global N
+    global polygon1_points
+    global polygon2_points
+    global similar1
+    global similar2
+    for i in range(N):
+        similar1.append([])
+        similar2.append([])
+    for i in range(N):
+        #Polygon1
+        similar1[i].append(polygon1_points[i][0])
+        similar1[i].append(polygon1_points[i][5])
+        similar1[i].append(polygon1_points[i][6])
+        similar1[i].append(polygon1_points[i][7])
+        #Polygon2
+        similar2[i].append(polygon1_points[i][0])
+        similar2[i].append(polygon1_points[i][5])
+        similar2[i].append(polygon1_points[i][6])
+        similar2[i].append(polygon1_points[i][7])
+    same_angle = -1
+    remember_side_number = -1
+    koef = 0
+    flag = True
+    for i in range(N):
+        for j in range(N):
+            if similar1[i][2] == similar2[j][2] and similar1[i][3] == similar2[j][3]:
+                koef = similar1[i][1]/similar2[j][1]
+                break
+        break
+    for i in range(N):
+        if flag == False:
+            break
+        for j in range(N):
+            if similar1[i][2] == similar2[j][2] and similar1[i][3] == similar2[j][3]:
+                if koef != similar1[i][1]/similar2[j][1]:
+                    flag = False
+    if flag == True:
+        mb.showinfo(title="Great!",message="The Polygons are simillar!" )
         
+    
+
+
+    
     
 
 
@@ -297,7 +390,7 @@ def check_similarness():
         find_angles_of_polygon1()
         print(polygon1_points)
     #2 polygon
-    '''if polygon2_points != []:
+    if polygon2_points != []:
         try:
             for i in range(0, N):
                 a = sqrt((polygon2_points[i+1][1]-polygon2_points[i][1])**2 + (polygon2_points[i+1][2]-polygon2_points[i][2])**2)
@@ -306,7 +399,9 @@ def check_similarness():
         except:
             a = sqrt((polygon2_points[-1][1]-polygon2_points[0][1])**2 + (polygon2_points[-1][2]-polygon2_points[0][2])**2)
             a = float("%.2f" % a)
-            polygon2_points[i].append(a)'''
+            polygon2_points[i].append(a)
+        find_angles_for_polygon2()
+    similarness()
 
 
 def clear_previous():
