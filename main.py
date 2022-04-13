@@ -127,10 +127,14 @@ def add_point_to_polygon1():
 def draw_polygon1():
     global N
     global polygon1_points
+    draw_points1 = []
+    for i in range(N):
+        draw_points1.append(polygon1_points[i][1] + 345)
+        draw_points1.append((-1)*polygon1_points[i][2] + 260)
     try:
-        if len(polygon1_points) < N * 2:
+        if len(draw_points1) < N * 2:
             raise LessPointsThanN
-        canv.create_polygon(polygon1_points, fill="white", outline="black")
+        canv.create_polygon(draw_points1, fill="white", outline="black")
     except LessPointsThanN:
         mb.showerror(title="Error", message="Enter more Points")
     except:
@@ -182,10 +186,14 @@ def add_point_to_polygon2():
 def draw_polygon2():
     global N
     global polygon2_points
+    draw_points2 = []
+    for i in range(N):
+        draw_points2.append(polygon2_points[i][1] + 345)
+        draw_points2.append((-1)*polygon2_points[i][2] + 260)
     try:
-        if len(polygon2_points) < N * 2:
+        if len(draw_points2) < N * 2:
             raise LessPointsThanN
-        canv.create_polygon(polygon2_points, fill="white", outline="black")
+        canv.create_polygon(draw_points2, fill="white", outline="red")
     except LessPointsThanN:
         mb.showerror(title="Error", message="Enter more Points")
     except:
@@ -199,6 +207,7 @@ def submit():
         global count2
         global polygon1_points
         global polygon2_points
+        canv.delete("all")
         count1 = 0
         count2 = 0
         polygon1_points = []
@@ -342,19 +351,15 @@ def similarness():
     print("Similar2=", similar2)
     for i in range(N):
         if flag == False:
-            print("Flag=", flag)
             break
         for j in range(N):
-            print("Я в цикле")
-            if similar1[i][2] == similar2[j][2] and similar1[i][3] == similar2[j][3]:
-                print("Зашел в первое условие")
-                if koef != similar1[i][1]/similar2[j][1]:
-                    print("Зашел во второе условие и поменял флаг")
-                    flag = False
+            if (similar1[i][2] == similar2[j][2] and similar1[i][3] == similar2[j][3]) and koef != similar1[i][1]/similar2[j][1]:
+                flag = False
+                break
+    if flag == False:
+        mb.showinfo(title="Try again!", message="Polygons are not similar")
     if flag == True:
-        mb.showinfo(title="Great!",message="The Polygons are simillar!" )
-    else:
-        mb.showinfo(title="Wrong!", message="Polygons are NOT simillar")
+        mb.showinfo(title="Great!", message="Polygons are similar!")
         
     
 
@@ -369,8 +374,8 @@ def check_similarness():
     global polygon1_points
     global polygon2_points
     #drawing
-    #draw_polygon1()
-    #draw_polygon2()
+    draw_polygon1()
+    draw_polygon2()
     #finding sides size
     #1 polygon
     if polygon1_points != []:
@@ -402,11 +407,53 @@ def check_similarness():
 def clear_previous():
     global polygon1_points
     global polygon2_points
+    global point1_number
+    global point2_number
     polygon1_points = []
     polygon2_points = []
+    point1_number = []
+    point2_number = []
 
-    
-    
+
+def show1():
+    clear_all1()
+    global polygon1_points
+    action1 = int(points1_combobox.get())
+    x = polygon1_points[action1][1]
+    y = polygon1_points[action1][2]
+    input_x1_entry.insert(0, x)
+    input_y1_entry.insert(0, y)
+
+def show2():
+    clear_all2()
+    global polygon2_points
+    action2 = int(points2_combobox.get())
+    x = polygon2_points[action2][1]
+    y = polygon2_points[action2][2]
+    input_x2_entry.insert(0, x)
+    input_y2_entry.insert(0, y)
+
+
+def change_points1():
+    global polygon1_points
+    global polygon2_points
+    action1 = points1_combobox.get()
+    action2 = points2_combobox.get()
+    x = input_x1_entry.get()
+    y = input_y1_entry.get()
+    polygon1_points[action1][1] = x
+    polygon1_points[action1][2] = y
+
+
+def change_points2():
+    global polygon1_points
+    global polygon2_points
+    action1 = points1_combobox.get()
+    action2 = points2_combobox.get()
+    x = input_x2_entry.get()
+    y = input_y2_entry.get()
+    polygon2_points[action2][1] = x
+    polygon2_points[action2][2] = y
 
 
 #LABELS AND ENTRYS
@@ -501,6 +548,19 @@ choose_point_from_polygon2.grid(column=3, row=8, sticky="W")
 points2_combobox = ttk.Combobox(Frame_for_polygon2, values=point2_number)
 points2_combobox.grid(column=3, row=9)
 
+#Points change
+show_previous1 = Button(Frame_for_polygon1, text="Show Previous", command=show1)
+show_previous1.grid(column=1, row=10)
+
+change_point1 = Button(Frame_for_polygon1, text="Change Point1", command=change_points1)
+change_point1.grid(column=2, row=10)
+
+show_previous2 = Button(Frame_for_polygon2, text="Show Previous", command=show2)
+show_previous2.grid(column=3, row=10)
+
+change_point2 = Button(Frame_for_polygon2, text="Change Point2", command=change_points2)
+change_point2.grid(column=4, row=10)
+
 
 
 
@@ -510,6 +570,7 @@ check_for_similarness_button.grid(column=0, row=3, sticky="W")
 
 submit_sides_amount_button = Button(Frame_for_actions, text="Submit", command=submit)
 submit_sides_amount_button.grid(column=1, row=2)
+
 
 
 
