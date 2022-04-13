@@ -419,8 +419,8 @@ def show1():
     clear_all1()
     global polygon1_points
     action1 = int(points1_combobox.get())
-    x = polygon1_points[action1][1]
-    y = polygon1_points[action1][2]
+    x = polygon1_points[action1-1][1]
+    y = polygon1_points[action1-1][2]
     input_x1_entry.insert(0, x)
     input_y1_entry.insert(0, y)
 
@@ -428,8 +428,8 @@ def show2():
     clear_all2()
     global polygon2_points
     action2 = int(points2_combobox.get())
-    x = polygon2_points[action2][1]
-    y = polygon2_points[action2][2]
+    x = polygon2_points[action2-1][1]
+    y = polygon2_points[action2-1][2]
     input_x2_entry.insert(0, x)
     input_y2_entry.insert(0, y)
 
@@ -437,23 +437,28 @@ def show2():
 def change_points1():
     global polygon1_points
     global polygon2_points
-    action1 = points1_combobox.get()
+    action1 = int(points1_combobox.get())
     action2 = points2_combobox.get()
-    x = input_x1_entry.get()
-    y = input_y1_entry.get()
-    polygon1_points[action1][1] = x
-    polygon1_points[action1][2] = y
+    x = int(input_x1_entry.get())
+    y = int(input_y1_entry.get())
+    polygon1_points[action1-1][1] = x
+    polygon1_points[action1-1][2] = y
+    canv.delete("all")
+    draw_polygon1()
 
 
 def change_points2():
     global polygon1_points
     global polygon2_points
     action1 = points1_combobox.get()
-    action2 = points2_combobox.get()
-    x = input_x2_entry.get()
-    y = input_y2_entry.get()
-    polygon2_points[action2][1] = x
-    polygon2_points[action2][2] = y
+    action2 = int(points2_combobox.get())
+    x = int(input_x2_entry.get())
+    y = int(input_y2_entry.get())
+    print(x)
+    polygon2_points[action2-1][1] = x
+    polygon2_points[action2-1][2] = y
+    canv.delete("all")
+    draw_polygon2()
 
 
 #LABELS AND ENTRYS
@@ -550,16 +555,16 @@ points2_combobox.grid(column=3, row=9)
 
 #Points change
 show_previous1 = Button(Frame_for_polygon1, text="Show Previous", command=show1)
-show_previous1.grid(column=1, row=10)
+show_previous1.grid(column=1, row=10, sticky="W")
 
 change_point1 = Button(Frame_for_polygon1, text="Change Point1", command=change_points1)
-change_point1.grid(column=2, row=10)
+change_point1.grid(column=2, row=10, sticky="W")
 
 show_previous2 = Button(Frame_for_polygon2, text="Show Previous", command=show2)
-show_previous2.grid(column=3, row=10)
+show_previous2.grid(column=3, row=10, sticky="W")
 
 change_point2 = Button(Frame_for_polygon2, text="Change Point2", command=change_points2)
-change_point2.grid(column=4, row=10)
+change_point2.grid(column=4, row=10, sticky="W")
 
 
 
