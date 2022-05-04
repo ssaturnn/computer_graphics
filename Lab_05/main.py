@@ -1,3 +1,6 @@
+#Турчанинов Александр ИУ7-44Б лабораторная 5
+#Алгоритм с упорядоченным списком ребер
+
 import tkinter as tk
 import tkinter.ttk as ttk
 from tkinter import messagebox
