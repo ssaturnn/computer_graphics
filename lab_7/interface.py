@@ -17,7 +17,7 @@ def create_button(str, function, coordinates):
 
 
 def create_label(root, str, coordinates):
-    label = Label(root, text=str, bg="lavender", width=25,
+    label = Label(root, text=str, bg="turquoise", width=25,
                   font="Verdana 12")
     label.place(x=coordinates[0], y=coordinates[1], anchor="center", width=200)
 
@@ -25,7 +25,7 @@ def create_label(root, str, coordinates):
 def settings_interface(root, size, title):
     root.title(title)
     root.geometry(size)
-    root.configure(bg="lavender")
+    root.configure(bg="turquoise")
     root.resizable(width=False, height=False)
 
 
@@ -37,7 +37,7 @@ def selection(count, list_text, coordinates):
 
     for i in range(count):
         method = Radiobutton(text=list_text[i], variable=var,
-                             value=i, bg="lavender", width=25, font="Verdana 12")
+                             value=i, bg="turquoise", width=25, font="Verdana 12")
         method.place(x=coordinates[0],
                      y=coordinates[1] + 25 * i, anchor="center")
         list_method.append(method)
@@ -52,7 +52,7 @@ def create_entry(root, coordinates):
 
 
 def create_list_box(root, coordinates):
-    list_box = Listbox(root, width=48, height=17, bg="lavender")
+    list_box = Listbox(root, width=48, height=17, bg="turquoise")
     list_box.insert(END, "(x y)")
     list_box.place(x=coordinates[0], y=coordinates[1])
     scroll = Scrollbar(command=list_box.yview)

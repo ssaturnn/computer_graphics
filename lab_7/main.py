@@ -19,17 +19,17 @@ def main():
     canvas_class = paint_class(root)
 
     create_label(root, "Координаты линии:", [1000, 25])
-    create_label(root, "От:", [900, 75])
+    create_label(root, "От:", [910, 75])
     entry_line_start = create_entry(root, [1000, 75])
-    create_label(root, "До:", [900, 125])
+    create_label(root, "До:", [910, 125])
     entry_line_stop = create_entry(root, [1000, 125])
     create_button("Добавить линию", lambda arg1=line_list, arg2=entry_line_start,
                   arg3=entry_line_stop, arg4=canvas_class: add_line(arg1, arg2, arg3, arg4), [1000, 175])
 
     create_label(root, "Координаты контура:", [1000, 200])
-    create_label(root, "От:", [900, 250])
+    create_label(root, "От:", [910, 250])
     entry_contour_start = create_entry(root, [1000, 250])
-    create_label(root, "До:", [900, 300])
+    create_label(root, "До:", [910, 300])
     entry_contour_stop = create_entry(root, [1000, 300])
     create_button("Добавить контур", lambda arg1=contour, arg2=entry_contour_start,
                   arg3=entry_contour_stop, arg4=canvas_class: add_contour(arg1, arg2, arg3, arg4), [1000, 350])
